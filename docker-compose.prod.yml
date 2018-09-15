@@ -1,6 +1,6 @@
 version: '3'
 services:
   my-app:
-    image: jbecera/articles-products-and-express-routes:${IMAGE_VERSION}
+    image: jbecera/articles-products-and-express-knex:${IMAGE_VERSION}
     environment:
       NODE_ENV: production

@@ -4,8 +4,8 @@ class Users {
     this._count = 1;
     this._storage = [];
     this.add({
-      username: 'jeff',
-      password: 'jeff',
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
     });
   }
   all() {
