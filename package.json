@@ -4,23 +4,28 @@
   "description": "## Tests Let the **tests drive your development** or write your tests after. The choice is up to you! As for the testing tools use:   - [mocha](https://mochajs.org/)   - [chai](https://chaijs.com/)   - [supertest](https://github.com/visionmedia/supertest)     - [supertest is built upon `superagent` so these docs will be helpful as well](https://github.com/visionmedia/superagent)",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "migrate": "POSTGRES_HOSTNAME=localhost POSTGRES_CONTAINER_PORT=5432 npx knex migrate:latest",
+    "seed": "POSTGRES_HOSTNAME=localhost POSTGRES_CONTAINER_PORT=5432 npx knex seed:run"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DLeaguer/articles-products-and-express.git"
+    "url": "git+https://github.com/DLeaguer/articles-products-and-express-knex.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DLeaguer/articles-products-and-express/issues"
+    "url": "https://github.com/DLeaguer/articles-products-and-express-knex/issues"
   },
-  "homepage": "https://github.com/DLeaguer/articles-products-and-express#readme",
+  "homepage": "https://github.com/DLeaguer/articles-products-and-express-knex#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
-    "method-override": "^3.0.0"
+    "knex": "^0.15.2",
+    "method-override": "^3.0.0",
+    "pg": "^7.4.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",

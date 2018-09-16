@@ -6,16 +6,20 @@ const methodOverride = require('method-override');
 //Use db folder
 //Gets add() from .js
 const Products = require('./db/product.js');
-const Products_Inv = new Products(); // products.js add()
+const Products_Inv = new Products();
 const Articles = require('./db/articles.js');
-const Articles_Inv = new Articles(); // articles.js add()
+const Articles_Inv = new Articles(); 
 const Users = require('./db/users.js');
 const Users_Inv = new Users();
+const knex = require('./knex/knex.js');
+console.log('end db folders');
 
 //Use routes folder
 const productRoutes = require('./routes/product.js');
 const articleRoutes = require('./routes/articles.js');
+console.log('end articleRoutes');
 const userRoutes = require('./routes/users.js');
+console.log('end routes folder');
 
 //Use app for all express methods
 const app = express();
@@ -31,6 +35,7 @@ app.use((req, res, next) => {
 
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
+console.log('end app.set');
 
 //ROUTES below will not be used until called upon
 
@@ -78,5 +83,5 @@ app.get('*', (req, res) => {
 });  
 
 //SERVE PORT with LISTEN
-app.listen(process.env.PORT, () => {
-  console.log(`Server started on port: ${process.env.PORT}`)});
+app.listen(process.env.EXPRESS_CONTAINER_PORT, () => {
+  console.log(`Server started on port: ${process.env.EXPRESS_CONTAINER_PORT}`)});
