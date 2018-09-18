@@ -6,7 +6,7 @@ services:
       - db
     command: ["./node_modules/.bin/nodemon", "app.js"] 
     # ['npm', 'run', 'dev']
-    container_name: art-prod-express
+    container_name: apExpress
     volumes:
       - ".:/app/:rw"
     env_file: .env

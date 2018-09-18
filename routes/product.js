@@ -2,8 +2,8 @@ const express = require('express');
 const Router = express.Router();
 
 //Gets add() from .js
-const Products = require('../db/product.js');
-const Products_Inv = new Products();
+// const Products = require('../db/product.js');
+// const Products_Inv = new Products();
 const Users = require('../db/users.js');
 const Users_Inv = new Users();
 const knex = require('../knex/knex.js');
@@ -41,10 +41,11 @@ Router.post('/products/login', (req, res) => {
 
 //RENDER ALL
 Router.get('/productsHome', (req, res) => {
-    const allProducts = Products_Inv.all()
-      .then( results => {
-        console.log('routes/product.js results.rows =', results.rows)
-        const products = results.rows
+    // const allProducts = Products_Inv.all()
+    knex.raw(`SELECT * FROM products`)
+      .then( result => {
+        console.log('routes/product.js results.rows =', result.rows)
+        const products = result.rows
         res.render('productsHome', { products });
       })
       .catch( err => {

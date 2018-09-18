@@ -6,6 +6,7 @@ const Articles = require('../db/articles.js');
 const Articles_Inv = new Articles(); // articles.js add()
 const Users = require('../db/users.js');
 const Users_Inv = new Users();
+const knex = require('../knex/knex.js');
 
 //RENDER LOGIN 
 let authorized = false;
@@ -33,8 +34,15 @@ Router.post('/articles/login', (req, res) => {
 
 //RENDER ALL 
 Router.get('/articlesHome', (req, res) => {
-    const allArticles = Articles_Inv.all();
-    res.render('articlesHome', { allArticles });
+    // const allArticles = Articles_Inv.all();
+    knex.raw(`SELECT * FROM articles`)
+      .then( result => {
+        const articles = result.rows
+        res.render('articlesHome', { articles });
+      })
+      .catch( err => {
+        console.log('error', err);
+      });
 });
 
 //RENDER FORM
@@ -53,16 +61,30 @@ Router.get('/articles/:id/edit', (req, res) => {
   }
   else {
     const { id } = req.params;
-    let articleToEdit = Articles_Inv.getItemById(id);
-    res.render('edit', { articleToEdit });
+    // let articleToEdit = Articles_Inv.getItemById(id);
+    knex.raw(`SELECT * FROM articles WHERE id = ${id}`)
+      .then( result => {
+        const articleToEdit = result.rows[0]
+        res.render('edit', { articleToEdit });
+      })
+      .catch( err => {
+        console.log('error', err);
+      });
   }
 });
 
 //RENDER DETAIL
 Router.get('/articles/:id', (req, res) => {
     const{ id } = req.params;
-    const article = Articles_Inv.getItemById(id);
-    res.render('article-detail', article);
+    // const article = Articles_Inv.getItemById(id);
+    knex.raw(`SELECT * FROM articles WHERE id = ${id}`)
+      .then( result => {
+        const article = result.rows[0]
+        res.render('article-detail', article);
+      })
+      .catch( err => {
+        console.log('error', err);
+      }); 
 });
 
 //ADD 
@@ -72,8 +94,14 @@ Router.post('/articles/new', (req, res) => {
   }
   else {
     const article = req.body;
-    Articles_Inv.add(article);
-    res.redirect('/articlesHome');
+    // Articles_Inv.add(article);
+    knex.raw(`INSERT INTO articles (title, body, author) VALUES ('${article.title}', '${article.body}', '${article.author}')`)
+      .then( result => {
+        res.redirect('/articlesHome');
+      })
+      .catch( err => {
+        console.log('error', err);
+      });
   }
 });
 
@@ -84,8 +112,14 @@ Router.delete('/articles/:id', (req, res) => {
   }
   else {
     const { id } = req.params;
-    Articles_Inv.deleteArticleById(id);
-    res.redirect('/articlesHome');
+    // Articles_Inv.deleteArticleById(id);
+    knex.raw(`DELETE FROM articles WHERE id = ${id}`)
+      .then( result => {
+        res.redirect('/articlesHome');
+      })
+      .catch( err => {
+        console.log('error', err);
+      });
   }
 })
 
@@ -96,17 +130,14 @@ Router.put('/articles/:id', (req, res) => {
   }
   else {
     const { id } = req.params;
-    let articleToEdit = Articles_Inv.getItemById(id);
-    if (req.body.title !== articleToEdit.title) {
-      articleToEdit.title = req.body.title;
-    }
-    if (req.body.body !== articleToEdit.body) {
-      articleToEdit.body = req.body.body;
-    }
-    if ( req.body.author !== articleToEdit.author) {
-      articleToEdit.author = req.body.author;
-    }
-    res.redirect(`/articles/${id}`);
+    const article = req.body;
+    knex.raw(`UPDATE articles SET title = '${article.title}', body = '${article.body}', author = '${article.author}'`)
+      .then( result => {
+        res.redirect(`/articles/${id}`);
+      })
+      .catch( err => {
+        console.log('error', err);
+      });
   }
 });
 
