@@ -1,3 +1,4 @@
+{{log}}
 {{log 'edit.hbs started'}}
 {{#with productToEdit}}
 <form action="/products/{{id}}?_method=PUT" method="post">
@@ -46,6 +47,27 @@
   </label>
   <br><br>
   <a href="/articlesHome/">Back to Articles</a>
+  {{/with}}
+</form>
+
+{{#with userToEdit}}
+<form action="/users/{{id}}?_method=PUT" method="post">
+  <h3>
+    <label>EDIT USERS</label>
+  </h3>
+  <label>Username:
+    <input type="text" name='username' id=''>
+  </label>
+  <br><br>
+  <label>Password:
+    <input type="text" name='password' id=''>
+  </label>
+  <br><br>
+  <label>
+    <input type="submit" value='Submit' >
+  </label>
+  <br><br>
+  <a href="/users/">Back to Users</a>
   {{/with}}
 </form>
 

@@ -1,0 +1,36 @@
+{{log}}
+{{log '> start user-form.hbs'}}
+
+<form action="/users/new" method="post">
+  <h3>
+    <label>ADD NEW USERS</label>
+  </h3>
+  <label>Username:
+    <input type="text" name="username" id="">
+  </label>
+  <br>
+  <br>
+  <label>Password:
+    <input type="text" name="password" id="">
+  </label>
+  <br>
+  <br>
+  <label>
+    <input type="submit" value="Submit">
+  </label>
+</form>
+    {{log '> NEW USERS page loaded to browser'}}
+
+
+{{!-- <form method='post' action='/products/{{id}}?_method=DELETE'>
+</form> --}}
+{{!-- {{log '> DELETE PRODUCTS page loaded to browser'}} --}}
+
+<br>
+<br>
+<a href="/users/">Back to Users Home</a>
+<br>
+<br>
+{{> footer}}
+
+{{log '> end user-form.hbs'}}

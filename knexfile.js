@@ -1,7 +1,7 @@
 // Update with your config settings.
 
 require('dotenv').config({path: './.env'});
-console.log('knexfile.js process.env =');
+console.log('\nknexfile.js process.env =');
 console.log(process.env);
 
 module.exports = {

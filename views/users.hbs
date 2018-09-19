@@ -1,0 +1,32 @@
+{{log}}
+{{log '> start users.hbs'}}
+<h1>Users:</h1>
+<br>
+{{#each users}}
+  <div>
+    <h2>
+      <a href="/users/{{id}}">{{username}}</a>
+    </h2>
+  </div>
+{{/each}}
+
+<br>
+<br>
+<a href="/users/new">ADD USER</a>
+
+<br>
+<br>
+<a href="/articlesHome">Articles Home</a>
+
+<br>
+<br>
+<a href="/productsHome">Products Home</a>
+
+<br>
+<br>
+{{> footer}}
+
+<br>
+<br>
+<a href="/users/logout">Editor Logout</a>
+{{log '> end users.hbs'}}

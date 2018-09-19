@@ -1,4 +1,5 @@
-<br><br><br><br>
+{{log}}
+{{log '> start articlesHome.hbs'}}
 <h1>Articles:</h1>
 <br>
 {{#each articles}}
@@ -12,9 +13,15 @@
 <br>
 <br>
 <a href="/articles/new">ADD ARTICLE</a>
+
 <br>
 <br>
 <a href="/productsHome">Products Home</a>
+
+<br>
+<br>
+<a href="/users">Users Home</a>
+
 <br>
 <br>
 {{> footer}}
@@ -22,3 +29,4 @@
 <br>
 <br>
 <a href="/articles/logout">Editor Logout</a>
+{{log '> end articlesHome.hbs'}}
