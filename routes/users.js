@@ -9,6 +9,7 @@ const Users_Inv = new Users();
 console.log(`connected folders`);
 
 //RENDER LOGIN 
+let authorized = false;
 Router.get('/users/login', (req, res) => {
   console.log('LOGIN authorize false render login.hbs');
   res.render('user-login');
@@ -31,14 +32,14 @@ Router.post('/users/login', (req, res) => {
   else {
     authorized = true;
     console.log('AUTHORIZE true render users.hbs');
-    res.render('users');
+    res.redirect('/users');
   }
 });
 
 //RENDER ALL
 Router.get('/users', (req, res) => {
   if (!authorized) {
-    console.log('FORM authorize false render login.hbs');
+    console.log('ALL authorize false render login.hbs');
     res.redirect('/users/login');
   }
   else {
@@ -57,7 +58,6 @@ Router.get('/users', (req, res) => {
 });
 
 //RENDER FORM 
-let authorized = true;
 Router.get('/users/new', (req, res) => {
   if (!authorized) {
     console.log('FORM authorize false render login.hbs');
