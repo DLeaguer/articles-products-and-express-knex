@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   my-app:
     image: jbecera/articles-products-and-express-knex:${IMAGE_VERSION}-local
