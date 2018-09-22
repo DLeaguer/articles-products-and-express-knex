@@ -1,24 +1,23 @@
 console.log(`\nstart routes/articles.js`);
+console.log(` connect require/assign`);
 const express = require('express');
-console.log(`connected required`);
 const Router = express.Router();
-console.log(`assigned express.Router() to Router`);
 
+console.log(` connect db`);
 const Users = require('../db/users.js');
 const Users_Inv = new Users();
 const knex = require('../knex/knex.js');
-console.log(`connected folders`);
 
 //RENDER LOGIN 
 let authorized = false;
 Router.get('/articles/login', (req, res) => {
-  console.log('LOGIN authorize false render articlesLogin.hbs');
+  console.log('LOGIN authorize false render articlesLogin');
   res.render('articlesLogin');
 });
 
 Router.get('/articles/logout', (req, res) => {
   authorized = false;
-  console.log('LOGOUT authorize false redirect home.hbs');
+  console.log('LOGOUT authorize false redirect /home');
   res.redirect('/');
 });
 
@@ -26,24 +25,32 @@ Router.get('/articles/logout', (req, res) => {
 Router.post('/articles/login', (req, res) => {
   const info = req.body;
   const user = Users_Inv.getUserByInfo(info.username, info.password);
-  if (user == undefined) {
-    console.log('AUTHORIZE false redirect /articles/login');
-    res.redirect('/articles/login');
-  }
-  else {
-    authorized = true;
-    console.log('AUTHORIZE true redirect /articlesHome');
-    res.redirect('/articlesHome');
-  }
+  // const { username } = req.body
+  // const { password } = req.body
+  // knex.raw(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`)
+  //   .then( result => {
+      // if (username == undefined || password == undefined) {
+        if(user == undefined) {
+        console.log('AUTHORIZE false redirect /articles/login');
+        res.redirect('/articles/login');
+      }
+      else {
+        authorized = true;
+        console.log('AUTHORIZE true redirect /articlesHome');
+        res.redirect('/articlesHome');
+      }
+    // })
+    // .catch( err => {
+    //   console.log('error', err);
+    // });
 });
 
 //RENDER ALL 
 Router.get('/articlesHome', (req, res) => {
-    // const allArticles = Articles_Inv.all();
     knex.raw(`SELECT * FROM articles`)
       .then( result => {
         const articles = result.rows
-        console.log('ALL render articlesHome.hbs');
+        console.log('ALL render articlesHome');
         res.render('articlesHome', { articles });
       })
       .catch( err => {
@@ -54,18 +61,18 @@ Router.get('/articlesHome', (req, res) => {
 //RENDER FORM
 Router.get('/articles/new', (req, res) => {
   if (!authorized) {
-    console.log('FORM authorize false render articlesLogin.hbs');
+    console.log('FORM authorize false redirect /articles/login');
     res.redirect('/articles/login');
   }
   else {
-    console.log(`FORM render articles-form`);
+    console.log(`FORM render article-form`);
     res.render('article-form');
   }
 });
 
 Router.get('/articles/:id/edit', (req, res) => {
   if (!authorized) {
-    console.log('FORM authorize false render articlesLogin.hbs');
+    console.log('FORM authorize false redirect /articles/login');
     res.redirect('/articles/login');
   }
   else {
@@ -73,7 +80,7 @@ Router.get('/articles/:id/edit', (req, res) => {
     knex.raw(`SELECT * FROM articles WHERE id = ${id}`)
       .then( result => {
         const articleToEdit = result.rows[0]
-        console.log('FORM render edit.hbs');
+        console.log('FORM render edit');
         res.render('edit', { articleToEdit });
       })
       .catch( err => {
@@ -89,7 +96,7 @@ Router.get('/articles/:id', (req, res) => {
     knex.raw(`SELECT * FROM articles WHERE id = ${id}`)
       .then( result => {
         const article = result.rows[0]
-        console.log('DETAIL render article-detail.hbs');
+        console.log('DETAIL render article-detail');
         res.render('article-detail', article);
       })
       .catch( err => {
@@ -100,7 +107,7 @@ Router.get('/articles/:id', (req, res) => {
 //ADD 
 Router.post('/articles/new', (req, res) => {
   if (!authorized) {
-    console.log('ADD authorize false render articlesLogin.hbs');
+    console.log('ADD authorize false redirect /articles/login');
     res.redirect('/articles/login');
   }
   else {
@@ -113,6 +120,7 @@ Router.post('/articles/new', (req, res) => {
       .catch( err => {
         console.log('error', err);
         console.log('ADD error redirect /articlesHome');
+        rex.redirect('/articlesHome');
       });
   }
 });

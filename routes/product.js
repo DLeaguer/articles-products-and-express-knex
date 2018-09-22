@@ -1,24 +1,23 @@
-console.log(`\nstart routes/product.js`)
+console.log(`\nstart routes/product.js`);
+console.log(` connect require/assign`);
 const express = require('express');
-console.log(`connected required`);
 const Router = express.Router();
-console.log(`assigned express.Router to Router`);
 
+console.log(` connect db`); 
 const Users = require('../db/users.js');
 const Users_Inv = new Users();
 const knex = require('../knex/knex.js');
-console.log(`connected folders`)
 
 //RENDER LOGIN 
 let authorized = false;
 Router.get('/products/login', (req, res) => {
-  console.log('LOGIN authorize false render productsLogin.hbs');
+  console.log('LOGIN authorize false render productsLogin');
   res.render('productsLogin');
 });
 
 Router.get('/products/logout', (req, res) => {
   authorized = false;
-  console.log('LOGOUT authorize false redirect home.hbs')
+  console.log('LOGOUT authorize false redirect /home')
   res.redirect('/');
 });
 
@@ -27,15 +26,20 @@ Router.post('/products/login', (req, res) => {
   const info = req.body;
   const user = Users_Inv.getUserByInfo
   (info.username, info.password);
-  if (user === undefined) {
-    console.log('AUTHORIZE false redirect /products/login');
-    res.redirect('/products/login');
-  }
-  else {
-    authorized = true;
-    console.log('AUTHORIZE true redirect /productsHome');
-    res.redirect('/productsHome');
-  }
+  // const { username } = req.body
+  // const { password } = req.body
+  // knex.raw(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`)
+    // .then( result => {
+      if (user == undefined) {
+        console.log('AUTHORIZE false redirect /products/login');
+        res.redirect('/products/login');
+      }
+      else {
+        authorized = true;
+        console.log('AUTHORIZE true redirect /productsHome');
+        res.redirect('/productsHome');
+      }
+    // })
 });
 
 //RENDER ALL
@@ -43,7 +47,7 @@ Router.get('/productsHome', (req, res) => {
   knex.raw(`SELECT * FROM products`)
   .then( result => {
     const products = result.rows
-        console.log('ALL render productsHome.hbs');
+        console.log('ALL render productsHome');
         res.render('productsHome', { products });
       })
       .catch( err => {
@@ -54,7 +58,7 @@ Router.get('/productsHome', (req, res) => {
 //RENDER FORM 
 Router.get('/products/new', (req, res) => {
   if (!authorized) {
-    console.log('FORM render productsLogin.hbs');
+    console.log('FORM redirect /products/login');
     res.redirect('/products/login');
   }
   else {
@@ -65,7 +69,7 @@ Router.get('/products/new', (req, res) => {
 
 Router.get('/products/:id/edit', (req, res) => {
   if (!authorized) {
-    console.log('FORM render productsLogin.hbs');
+    console.log('FORM redirect /products/login');
     res.redirect('/products/login');
   }
   else {
@@ -73,7 +77,7 @@ Router.get('/products/:id/edit', (req, res) => {
     knex.raw(`SELECT * FROM products WHERE id = ${id}`)
     .then( result => {
       const productToEdit = result.rows[0]
-      console.log('FORM render edit.hbs');
+      console.log('FORM render edit');
       res.render('edit', { productToEdit });
     })
     .catch( err => {
@@ -88,7 +92,7 @@ Router.get('/products/:id', (req, res) => {
     knex.raw(`SELECT * FROM products WHERE id = ${id}`)
       .then( result => {
         const product = result.rows[0]
-        console.log('DETAIL render product-detail.hbs');
+        console.log('DETAIL render product-detail');
         res.render('product-detail',  product);
       })
       .catch( err => {
@@ -99,7 +103,7 @@ Router.get('/products/:id', (req, res) => {
 //ADD 
 Router.post('/products/new', (req, res) => {
   if (!authorized) {
-    console.log('ADD authorize false redirect /products.login');
+    console.log('ADD authorize false redirect /products/login');
     res.redirect('/products/login');
   }
   else {
@@ -125,7 +129,6 @@ Router.delete('/products/:id', (req, res) => {
   }
   else {
     const { id } = req.params;
-    console.log(' id = ', id);
     knex.raw(`DELETE FROM products WHERE id = ${id}`)
       .then( result => {
         console.log('DELETE product redirect /productsHome');

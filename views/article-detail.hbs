@@ -1,5 +1,5 @@
 {{log}}
-{{log 'start article-detail.hbs'}}
+{{log '> start article-detail.hbs'}}
 
 <h1>{{ title }}</h1>
 <br>
@@ -10,19 +10,20 @@
 <h3>Id: {{ id }}</h3>
 <br>
 <br>
+
 <form method='post' action='/articles/{{id}}?_method=DELETE'>
-<button type="submit">Delete article</button>
+  <button type="submit">Delete article</button>
 </form>
-{{!-- <a href="/articles/{{id}}/removeArticle">Delete article</a> --}}
-{{!-- <br> --}}
+
 <br>
 <a href="/articles/{{id}}/edit">Edit Article</a>
 
 <br>
 <br>
 <a href="/articlesHome/">Articles Home</a>
+
 <br>
 <br>
 {{> footer}}
 
-{{log 'end article-detail.hbs'}}
+{{log '> end article-detail.hbs'}}

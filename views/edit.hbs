@@ -1,5 +1,6 @@
 {{log}}
-{{log 'edit.hbs started'}}
+{{log '> edit.hbs started'}}
+
 {{#with productToEdit}}
 <form action="/products/{{id}}?_method=PUT" method="post">
   <h3>
@@ -71,7 +72,7 @@
   {{/with}}
 </form>
 
-
 <br><br>
 {{> footer}}
-{{log 'edit.hbs ended'}}
+
+{{log '> edit.hbs ended'}}

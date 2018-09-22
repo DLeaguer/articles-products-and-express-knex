@@ -10,7 +10,7 @@
   </label>
   <br>
   <br>
-  <label>Price:
+  <label>Price: $
     <input type="number" oninput="$" min=0 step=0.01 onforminput="$" name="price" id="">
   </label>
   <br>
@@ -24,16 +24,13 @@
     <input type="submit" value="Submit">
   </label>
 </form>
-    {{log '> NEW PRODUCTS page loaded to browser'}}
 
-
-{{!-- <form method='post' action='/products/{{id}}?_method=DELETE'>
-</form> --}}
-{{!-- {{log '> DELETE PRODUCTS page loaded to browser'}} --}}
+{{log '> NEW PRODUCTS page loaded to browser'}}
 
 <br>
 <br>
 <a href="/productsHome/">Back to Products Home</a>
+
 <br>
 <br>
 {{> footer}}
