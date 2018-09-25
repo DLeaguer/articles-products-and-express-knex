@@ -40,20 +40,21 @@ Router.get('/logout', (req, res) => {
 
 //AUTHORIZE 
 Router.post('/login', (req, res) => {
-  // const info = req.body;
+  const info = req.body;
   // const user = Users_Inv.getUserByInfo(info.username, info.password);
-  const { username } = req.body
-  const { password } = req.body
-  knex.raw(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`)
+  const namepass = info.username
+  const wordpass = info.password
+  knex.raw(`SELECT * FROM users WHERE username = '${namepass}' AND password = '${wordpass}'`)
   .then( result => {
-    if (username == undefined && password == undefined) {
-      console.log('AUTHORIZE false redirect /login');
-      res.redirect('/login');
-    }
-    else {
+    console.log('result.rows =', result.rows);
+    if (namepass == result.rows[0].username && wordpass == result.rows[0].password) {
       authorized = true;
       console.log('AUTHORIZE true redirect /home');
-      res.redirect('/productsHome');
+      res.redirect('/');
+    }
+    else {
+      console.log('AUTHORIZE false redirect /login');
+      res.redirect('/login');
     }
   })
   .catch( err => {

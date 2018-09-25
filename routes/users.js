@@ -24,39 +24,39 @@ Router.get('/users/logout', (req, res) => {
 //AUTHORIZE 
 Router.post('/users/login', (req, res) => {
   const info = req.body;
-  const user = Users_Inv.getUserByInfo(info.username, info.password);
-  // const namepass = req.body.username
-  // console.log('namepass =', namepass);
-  // const wordpass = req.body.password
-  // console.log('wordpass =', wordpass);
-  // knex.raw('SELECT * FROM users')
-  //   .then( result => {
-  //     console.log('result.rows =', result.rows);
-  //   })
-  //   .catch( err => {
-  //     console.log('error', err);
-  //   });
-  // // knex.raw(`SELECT * FROM users WHERE username = '${namepass}' AND password = '${wordpass}'`)
-  // //   .then( result => {
-  //     console.log('result.rows[0] =', result.rows[0]);
-  //     console.log('result.rows[0].username =', result.rows[0].username);
-  //     console.log('result.username =', result.username);
-  //     console.log('result.namepass =', result.namepass);
-  //     console.log('namepass =', namepass);
-      // if (result.rows[0].username == undefined || result.rows[0].password   == undefined) {
-        if (user == undefined) {
-        console.log('AUTHORIZE false redirect /users/login');
-        res.redirect('/users/login');
-      }
-      else {
+  // const user = Users_Inv.getUserByInfo(info.username, info.password);
+  const namepass = info.username
+  console.log('namepass =', namepass);
+  const wordpass = info.password
+  console.log('wordpass =', wordpass);
+  knex.raw('SELECT * FROM users')
+    .then( result => {
+      console.log('result.rows =', result.rows);
+    })
+    .catch( err => {
+      console.log('error', err);
+    });
+  knex.raw(`SELECT * FROM users WHERE username = '${namepass}' AND password = '${wordpass}'`)
+    .then( result => {
+      console.log('result.rows[0] =', result.rows[0]);
+      console.log('result.rows[0].username =', result.rows[0].username);
+      console.log('result.username =', result.username);
+      console.log('result.namepass =', result.namepass);
+      console.log('namepass =', namepass);
+      if (result.rows[0].username == namepass && result.rows[0].password == wordpass) {
         authorized = true;
         console.log('AUTHORIZE true redirect /users');
         res.redirect('/users');
       }
-    // })
-    // .catch( err => {
-    //   console.log('error', err);
-    // });
+      else {
+        console.log('AUTHORIZE false redirect /users/login');
+        res.redirect('/users/login');
+      }
+    })
+    
+    .catch( err => {
+      console.log('error', err);
+    });
 });
 
 //RENDER ALL
@@ -100,9 +100,16 @@ Router.get('/users/:id/edit', (req, res) => {
   }
   else {
     const { id } = req.params;
-    let userToEdit = Users_Inv.getUserById(id);
-    console.log(`FORM render edit`);
-    res.render('edit', { userToEdit});
+    // let userToEdit = Users_Inv.getUserById(id);
+    knex.raw( `SELECT * FROM users WHERE id = ${id}`)
+      .then( result => {
+        const userToEdit = result.rows[0]
+        console.log(`FORM render edit`);
+        res.render('edit', { userToEdit});
+      })
+      .catch( err => {
+        console.log('error', err);
+      });
   }
 });
 
@@ -176,6 +183,8 @@ Router.put('/users/:id', (req, res) => {
   else {
     const { id } = req.params;
     const user = req.body;
+    console.log('user.username =', user.username);
+    console.log('user.password =', user.password);
     knex.raw(`UPDATE users SET username = '${user.username}', password = '${user.password}' WHERE id = ${id}`)
       .then( result => {
       console.log('EDIT redirect /users/${id}');

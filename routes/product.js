@@ -24,22 +24,23 @@ Router.get('/products/logout', (req, res) => {
 //AUTHORIZE 
 Router.post('/products/login', (req, res) => {
   const info = req.body;
-  const user = Users_Inv.getUserByInfo
-  (info.username, info.password);
-  // const { username } = req.body
-  // const { password } = req.body
-  // knex.raw(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`)
-    // .then( result => {
-      if (user == undefined) {
-        console.log('AUTHORIZE false redirect /products/login');
-        res.redirect('/products/login');
-      }
-      else {
+  // const user = Users_Inv.getUserByInfo
+  // (info.username, info.password);
+  const namepass = req.body.username
+  const wordpass = req.body.password
+  knex.raw(`SELECT * FROM users WHERE username = '${namepass}' AND password = '${wordpass}'`)
+    .then( result => {
+      console.log('result.rows =', result.rows);
+      if (result.rows[0].username == namepass && result.rows[0].password == wordpass) {
         authorized = true;
         console.log('AUTHORIZE true redirect /productsHome');
         res.redirect('/productsHome');
       }
-    // })
+      else {
+        console.log('AUTHORIZE false redirect /products/login');
+        res.redirect('/products/login');
+      }
+    })
 });
 
 //RENDER ALL

@@ -24,25 +24,25 @@ Router.get('/articles/logout', (req, res) => {
 //AUTHORIZE 
 Router.post('/articles/login', (req, res) => {
   const info = req.body;
-  const user = Users_Inv.getUserByInfo(info.username, info.password);
-  // const { username } = req.body
-  // const { password } = req.body
-  // knex.raw(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`)
-  //   .then( result => {
-      // if (username == undefined || password == undefined) {
-        if(user == undefined) {
-        console.log('AUTHORIZE false redirect /articles/login');
-        res.redirect('/articles/login');
-      }
-      else {
+  // const user = Users_Inv.getUserByInfo(info.username, info.password);
+  const namepass = info.username
+  const wordpass = req.body.password
+  knex.raw(`SELECT * FROM users WHERE username = '${namepass}' AND password = '${wordpass}'`)
+    .then( result => {
+      console.log('result.rows =', result.rows);
+      if (namepass == result.rows[0].username && wordpass == result.rows[0].password) {
         authorized = true;
         console.log('AUTHORIZE true redirect /articlesHome');
         res.redirect('/articlesHome');
       }
-    // })
-    // .catch( err => {
-    //   console.log('error', err);
-    // });
+      else {
+        console.log('AUTHORIZE false redirect /articles/login');
+        res.redirect('/articles/login');
+      }
+    })
+    .catch( err => {
+      console.log('error', err);
+    });
 });
 
 //RENDER ALL 
